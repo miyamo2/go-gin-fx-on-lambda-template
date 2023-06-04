@@ -1,7 +1,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs'
-import { APIGwHelloAPIResource } from './resources/apigw_helloapi_stack'
-import { LambdaHelloFunctionResource } from './resources/lambda_hellofunction_stack'
+import { APIGwHelloAPIResource } from './resources/apigw_helloapi_resource'
+import { LambdaHelloFunctionResource } from './resources/lambda_hellofunction_resource'
 
 interface GoGinFxOnLambdaTemplateCdkStackProps extends cdk.StackProps {
 
