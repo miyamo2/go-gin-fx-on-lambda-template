@@ -51,5 +51,6 @@ jobs:
           npm run cdk deploy -- \
           GoGinFxOnLambdaTemplateCdkStack \
           --require-approval never \
-          --context stage="dev" rootdir="${{ github.workspace }}"
+          --context rootdir="${{ github.workspace }}" \
+          --context stage="dev"
         working-directory: ./go-gin-fx-on-lambda-template-cdk
