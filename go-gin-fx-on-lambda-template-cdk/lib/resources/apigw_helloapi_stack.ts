@@ -5,15 +5,15 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 
 const API_NAME = "HelloAPI"
 
-interface APIGwHelloAPIStackProps {
+interface APIGwHelloAPIResourceProps {
     stage: string;
 
     helloFunction: lambda.Function
 }
 
-export class APIGwHelloAPIStack extends cdk.Stack {
-    constructor(scope: cdk.Stack, props: APIGwHelloAPIStackProps) {
-        super(scope, `${API_NAME}Stack-${props.stage}`);
+export class APIGwHelloAPIResource extends cdk.Resource {
+    constructor(scope: cdk.Stack, props: APIGwHelloAPIResourceProps) {
+        super(scope, `${API_NAME}Resource-${props.stage}`);
         const api = new apiGateway.RestApi(
             this,
             `HelloAPI-${props.stage}`,
