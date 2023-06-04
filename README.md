@@ -43,12 +43,6 @@ classDiagram
       +Run(Lifecycle)* void
    }
 
-   class GinRunner {
-      -engine *gin.Engine
-      -uri    []string
-      +Run(Lifecycle)* void
-   }
-
    class Handler {
       -ginLambda *GinLambda
       +Execute(Context, APIGatewayProxyRequest)* APIGatewayProxyResponse, error
@@ -63,6 +57,24 @@ classDiagram
    class App {
       <<Fx>>
       +Run()
+   }
+
+   class Engine {
+      <<Gin>>
+   }
+
+   class GinLambda {
+      <<ginadapter>>
+      -ginEngine *Engine
+   }
+
+   class fx_provider {
+      <<ResolvedToDI>>
+   }
+
+   class invokeOption {
+      <<Fx>>
+      +Targets []interface
    }
 
    class HelloController {
@@ -101,9 +113,7 @@ classDiagram
       +SayBye(string)* string, error
    }
 
-   GinRunner ..|> FxAppRunner
-   LambdaRunner ..|> FxAppRunner
-   Handler --o LambdaRunner
+
    SayHelloUsecaseImpl ..|> SayHelloUsecase
    DoGreetUsecaseImpl ..|> DoGreetUsecase
    SayByeUsecaseImpl ..|> SayByeUsecase
@@ -111,11 +121,24 @@ classDiagram
    DoGreetUsecase --o HelloController
    SayByeUsecase --o HelloController
 
-   App ..> SayHelloUsecaseImpl
-   App ..> DoGreetUsecaseImpl
-   App ..> SayByeUsecaseImpl
-   App ..> LambdaRunner
-   App ..> Handler
-   App ..> HelloController
+   fx_provider ..> SayHelloUsecaseImpl
+   fx_provider ..> DoGreetUsecaseImpl
+   fx_provider ..> SayByeUsecaseImpl
+   fx_provider ..> LambdaRunner
+   fx_provider ..> Handler
+   fx_provider ..> HelloController
+   fx_provider ..> Engine
+   fx_provider ..> GinLambda
+
+   Engine ..> HelloController
+   GinLambda --o Engine
+   LambdaRunner --o Handler
+   Handler --o GinLambda
+
+   LambdaRunner ..|> FxAppRunner
+   invokeOption ..> FxAppRunner
+
+   App ..> invokeOption
+   App ..> fx_provider
    hello ..> App
 ```
