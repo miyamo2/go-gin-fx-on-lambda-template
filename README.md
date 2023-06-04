@@ -1,0 +1,1 @@
+# go-gin-fx-on-lambda-template
